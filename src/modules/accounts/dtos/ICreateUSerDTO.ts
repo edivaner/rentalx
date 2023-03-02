@@ -1,9 +1,11 @@
 
 interface ICreateUsersTDO {
-    name: string,
-    email: string,
-    password: string,
-    driver_license: string
+    name: string;
+    email: string;
+    password: string;
+    driver_license: string;
+    id?: string;
+    avatar: string;
 }
 
 export { ICreateUsersTDO }
