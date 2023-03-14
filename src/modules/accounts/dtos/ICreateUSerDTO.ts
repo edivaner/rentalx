@@ -5,7 +5,7 @@ interface ICreateUsersTDO {
     password: string;
     driver_license: string;
     id?: string;
-    avatar: string;
+    avatar?: string;
 }
 
 export { ICreateUsersTDO }
