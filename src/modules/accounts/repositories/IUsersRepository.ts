@@ -1,5 +1,5 @@
 import { ICreateUsersTDO } from "../dtos/ICreateUSerDTO"
-import { User } from "../entities/User"
+import { User } from "../infra/typeorm/entities/User"
 
 interface IUserRepository {
     create({ name, email, password, driver_license }: ICreateUsersTDO): Promise<void>
