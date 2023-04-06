@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 import { inject, injectable } from "tsyringe";
 import { ICarsRepository } from "../../repositories/ICarsRepository";
 import { AppError } from "../../../../shared/errors/AppError";
@@ -13,7 +15,7 @@ interface IRequest {
 class CreateCarSpecificationUseCase {
 
     constructor(
-        @inject("CarREpository")
+        @inject("CarRepository")
         private carsRepository: ICarsRepository,
         @inject("SpecificationRepository")
         private specificationsRepository: ISpecificationRepository,
@@ -22,13 +24,16 @@ class CreateCarSpecificationUseCase {
     }
 
 
-    async execute({ car_id, specification_id }): Promise<Car> {
+    async execute({ car_id, specifications_id }): Promise<Car> {
         const carExists = await this.carsRepository.findById(car_id);
 
         if (!carExists)
             throw new AppError("Car does not exists!");
 
-        const specification = await this.specificationsRepository.findByIds(specification_id);
+        const specification = await this.specificationsRepository.findByIds(specifications_id);
+
+        if (!specification)
+            throw new AppError("Specification does not exists!");
 
         carExists.specifications = specification;
 
