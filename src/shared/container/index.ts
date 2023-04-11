@@ -10,6 +10,7 @@ import { IUserRepository } from '../../modules/accounts/repositories/IUsersRepos
 import { UsersRepository } from '../../modules/accounts/infra/typeorm/repositories/UsersRepository';
 import { ICarsRepository } from '../../modules/cars/repositories/ICarsRepository';
 import { CarRepository } from '../../modules/cars/infra/typeorm/repositories/CarRepository';
+import { CarsImagesRepository } from '../../modules/cars/infra/typeorm/repositories/CarsImagesRepository';
 
 container.registerSingleton<ICategoriesRepository>(
     "CategoryRepositories", //Nome do container
@@ -29,4 +30,9 @@ container.registerSingleton<IUserRepository>(
 container.registerSingleton<ICarsRepository>(
     "CarRepository",
     CarRepository
+);
+
+container.registerSingleton<CarsImagesRepository>(
+    "CarsImagesRepository",
+    CarsImagesRepository
 )
