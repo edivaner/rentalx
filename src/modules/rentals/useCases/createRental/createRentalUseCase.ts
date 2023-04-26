@@ -40,9 +40,6 @@ class CreateRentalUseCase {
         const expectedReturnDateFormat = new Date(this.dateProvider.convertToUTC(expected_return_date));
         const compareDate = this.dateProvider.compareInHours(dateNow, expectedReturnDateFormat);
 
-        console.log("Compare: " + compareDate);
-        console.log("Expectativa: " + expectedReturnDateFormat);
-        console.log("Data atual: " + dateNow);
         if (compareDate < minimumHoursAtRental) {
             throw new AppError("Invalid return time!");
         }
