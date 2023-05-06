@@ -3,6 +3,7 @@ import { IDateProvider } from "../../../../shared/container/providers/DateProvid
 import { AppError } from "../../../../shared/errors/AppError";
 import { Rental } from "../../infra/typeorm/entities/Rental";
 import { IRentalsRepository } from "../../repositories/IRentalsRepository";
+import { ICarsRepository } from "../../../cars/repositories/ICarsRepository";
 
 
 interface IRequest {
@@ -18,7 +19,9 @@ class CreateRentalUseCase {
         @inject("RentalsRepository")
         private rentalsRepository: IRentalsRepository,
         @inject("DayjsProvider")
-        private dateProvider: IDateProvider
+        private dateProvider: IDateProvider,
+        @inject("CarRepository")
+        private carRepository: ICarsRepository,
     ) { }
 
     async execute({ user_id, car_id, expected_return_date }: IRequest): Promise<Rental> {
@@ -36,9 +39,8 @@ class CreateRentalUseCase {
             throw new AppError("There's a rental in progress for user.");
         }
 
-        const dateNow = new Date(this.dateProvider.convertToUTC(new Date));
-        const expectedReturnDateFormat = new Date(this.dateProvider.convertToUTC(expected_return_date));
-        const compareDate = this.dateProvider.compareInHours(dateNow, expectedReturnDateFormat);
+        const dateNow = this.dateProvider.dateNow();
+        const compareDate = this.dateProvider.compareInHours(dateNow, expected_return_date);
 
         if (compareDate < minimumHoursAtRental) {
             throw new AppError("Invalid return time!");
@@ -49,6 +51,8 @@ class CreateRentalUseCase {
             car_id,
             expected_return_date
         });
+
+        await this.carRepository.updateAvailable(car_id, false);
 
         return rental;
     }
